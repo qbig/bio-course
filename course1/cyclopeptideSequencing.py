@@ -116,8 +116,15 @@ def cyclopeptideSequencing(spectrum):
         
     return result
 
-for l in list(set(["-".join([str(massDic[p]) for p in pep]) for pep in cyclopeptideSequencing(spectrum)])):
-    print l,
+print consistent("TCE", spectrum)
+print consistent("CET", spectrum)
+print consistent("VAQ", spectrum)
+print consistent("AQV", spectrum)
+print consistent("CTV", spectrum)
+print consistent("ETC", spectrum)
+
+# for l in list(set(["-".join([str(massDic[p]) for p in pep]) for pep in cyclopeptideSequencing(spectrum)])):
+#     print l,
 
 
 
