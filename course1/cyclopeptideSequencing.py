@@ -47,23 +47,26 @@ def linearSpectrum(pep, aminoAcid, aminoAcidMass):
     return linearSpectrumDic[pep]
 
 cyclicSpectrumDic = {}
+
+
 def cyclicSpectrum(pep, aminoAcid, aminoAcidMass):
     if pep in cyclicSpectrumDic:
         return cyclicSpectrumDic[pep]
+    
     l = len(pep)
-    prefixMass = [0] * (l+1)
+    prefixMass = [0] * (l + 1)
 
-    for i in range(1, l+1):
+    for i in range(1, l + 1):
         for j in range(20):
-            if aminoAcid[j] == pep[i-1]:
-                prefixMass[i] = prefixMass[i-1] + aminoAcidMass[j]
+            if aminoAcid[j] == pep[i - 1]:
+                prefixMass[i] = prefixMass[i - 1] + aminoAcidMass[j]
     result = [0]
     pepMass = prefixMass[-1]
     for i in range(l):
-        for j in range(i+1, l+1):
-            result.append(prefixMass[j]-prefixMass[i])
+        for j in range(i + 1, l + 1):
+            result.append(prefixMass[j] - prefixMass[i])
             if i > 0 and j < l:
-                result.append(pepMass - (prefixMass[j]-prefixMass[i]))
+                result.append(pepMass - (prefixMass[j] - prefixMass[i]))
     cyclicSpectrumDic[pep] = sorted(result)
     return cyclicSpectrumDic[pep]
 
@@ -72,7 +75,6 @@ def expand(peps):
     result = []
     for pep in peps:
         result += [pep + amino for amino in aminoAcid]
-    #print result
     return result
 
 
@@ -85,7 +87,7 @@ def consistent(pep, spectrum):
     for num in spectrum:
         if num in dic:
             dic[num] += 1
-        else :
+        else:
             dic[num] = 1
     linearSpec = linearSpectrum(pep, aminoAcid, aminoAcidMass)
     for w in linearSpec:
@@ -100,7 +102,6 @@ def consistent(pep, spectrum):
 def cyclopeptideSequencing(spectrum):
     peptides = [""]
     result = []
-    visied = {}
     while peptides:
         peptides = expand(peptides)
         peptidesNext = peptides[:]
@@ -110,8 +111,7 @@ def cyclopeptideSequencing(spectrum):
                     result.append(pep)
                 peptidesNext.remove(pep)
             elif not consistent(pep, spectrum):
-                peptidesNext.remove(pep)
-        
+                peptidesNext.remove(pep)        
         peptides = peptidesNext[:]
         
     return result
