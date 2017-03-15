@@ -45,6 +45,33 @@ class SolutionIterative(object):
         			dp[i] = dp[i - coinVal] + 1
         
         return dp[-1]
+
+
+class SolutionIterativeOptimized(object):
+    def __init__(self, amount, coins):
+        self.min = {}
+        self.amount = amount
+        self.coins = coins
+
+    def solve(self):
+    	size = max(self.coins)
+    	dp = [999999] * size
+        for coinVal in self.coins:
+        	dp[(coinVal-1) % size] = 1
+
+        for i in range(1, self.amount+1):
+        	res = [dp[(i - coinVal) % size] + 1 for coinVal in self.coins if i - coinVal > 0]
+        	if not res:
+        		continue
+        	
+        	dp[i % size] = min(res)
+
+        print dp
+
+        return min(dp)
         
+
+
 print Solution(amount, coins).solve()
 print SolutionIterative(amount, coins).solve()
+print SolutionIterativeOptimized(amount, coins).solve()
